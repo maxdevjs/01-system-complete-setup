@@ -10,7 +10,7 @@ fi
 log "Commons setup"
 
 execute() {
-  . ./flatpak
+  ./flatpak
 }
 
 execute

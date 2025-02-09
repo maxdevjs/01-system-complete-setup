@@ -6,14 +6,15 @@ fi
 
 bin() {
   create_dir $HOME/.local/bin
-  git clone https://github.com/maxdevjs/dotfiles-scripts $HOME/.local/scripts
+  git clone https://github.com/maxdevjs/scripts $HOME/.local/scripts
 }
 
 execute() {
-  . ./00-config/setup
-  . ./01-dotfiles/setup
-  . ./02-system-install-apps/setup
-  . ./03-post-config/setup
+  bin
+  ./00-config/setup
+  ./01-dotfiles/setup
+  ./02-system-install-apps/setup
+  ./03-post-config/setup
 }
 
 execute

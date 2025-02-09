@@ -10,9 +10,9 @@ fi
 log "Nix apps install"
 
 execute () {
-  . ./app/default.nix
-  . ./dev/default.nix
-  . ./sys/default.nix
+  ./app/default.nix
+  ./dev/default.nix
+  ./sys/default.nix
 }
 
 execute

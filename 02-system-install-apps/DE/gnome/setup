@@ -4,7 +4,7 @@
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
-  . ../../utils
+  . ../../../utils
 fi
 
 log "Installing Gnome extensions"
