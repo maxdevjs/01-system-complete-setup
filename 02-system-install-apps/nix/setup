@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../utils
+fi
+
+log "Nix apps install"
+
+execute () {
+  . ./app/default.nix
+  . ./dev/default.nix
+  . ./sys/default.nix
+}
+
+execute
+

@@ -1,0 +1,45 @@
+# check https://bacnh.com/setup-podman-in-clearlinux
+
+
+# https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md
+# https://github.com/containers/podman/blob/main/rootless.md
+
+sudo touch /etc/subuid
+sudo touch /etc/subgid
+sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
+sudo chmod 666 /dev/kvm
+
+# nix-env -iA nixpkgs.libvirt
+# sudo groupadd libvirtd
+# sudo usermod -aG libvirtd $USER
+# sudo systemctl restart libvirtd.service
+# su - $USER
+
+# https://github.com/containers/podman/blob/main/docs/tutorials/socket_activation.md
+sudo cp podman.socket /usr/lib/systemd/user/
+
+# https://www.baeldung.com/linux/unix-domain-socket-create
+# https://serverfault.com/a/964863
+# nc -lkU /run/user/1000/podman/podman.sock
+# it hungs
+
+# mkdir -p $HOME/.config/systemd/user
+mkdir -p $HOME/.config/containers/systemd
+
+cp echo.container $HOME/.config/containers/systemd/
+cp echo.socket $HOME/.config/systemd/user/
+
+systemctl --user daemon-reload
+
+# systemctl --user enable --now podman.socket
+# systemctl --user start podman.socket
+# systemctl --user status podman.socket
+
+systemctl --user enable echo.socket
+podman pull ghcr.io/eriksjolund/socket-activate-echo
+systemctl --user start echo.socket
+systemctl --user cat echo.service
+
+podman system service -t 5000
+
+# ls /run/user/1000/podman/

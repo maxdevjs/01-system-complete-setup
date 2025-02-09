@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../utils
+fi
+
+log "Solus initial setup"
+
+execute() {
+  # https://help.getsol.us/docs/user/package-management/basics/
+  # https://discuss.getsol.us/d/3636-new-to-development-on-linux/6
+  #sudo eopkg ur
+  sudo eopkg upgrade
+  sudo eopkg install -c system.devel >/dev/null 2>&1
+}
+
+execute
+

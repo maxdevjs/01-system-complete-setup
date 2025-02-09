@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+echo setup-system-kitty
+
+# Includes setup-utilities only for standalone (directly calling)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ./setup-utilities
+fi
+
+setup_kitty() {
+  #single_repo https://github.com/maxdevjs/dotfiles-kitty-config kitty
+  
+	REPOS=(kitty)
+  repos "${REPOS[@]}"
+  
+  if ! exists kitty; then
+    # https://nixos.org/manual/nix/stable/introduction.html
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    cp ./kitty/kitty* $HOME/.local/share/applications
+    update-desktop-database $HOME/.local/share/applications
+  else
+    REMOTE_VERSION=`curl -s https://api.github.com/repos/kovidgoyal/kitty/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")' | cut -c2-`
+    
+    # `kitty -v` creates `kitty` empty dir in `$XDG_CONFIG_HOME`
+    INSTALLED_VERSION=$(kitty -v 2>&1 | cut -d ' ' -f2)
+    # Compare installed version to remote version
+    if [ $(version $INSTALLED_VERSION) -lt $(version $REMOTE_VERSION) ]; then
+      echo -e "Updating Kitty to ${REMOTE_VERSION}"
+      curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    else
+      echo "Installed version (${INSTALLED_VERSION}) is up to date (remote is ${REMOTE_VERSION})"
+    fi
+  fi
+}
+
+setup_kitty

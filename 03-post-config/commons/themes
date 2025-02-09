@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../utils
+fi
+
+log "Themes setup"
+
+setup_vimix_themes() {
+  REMOTE_VERSION=`curl -s https://api.github.com/repos/vinceliuice/${1}/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")' | cut -c2-`
+  cd /tmp/
+  rm -Rf /tmp/${1}.zip 2>/dev/null
+  rm -Rf /tmp/${1}-master/ 2>/dev/null
+  wget https://github.com/vinceliuice/${1}/archive/master.zip -O ${1}.zip
+  unzip ${1}.zip
+  cd ${1}-master
+  ./install.sh
+  echo "${REMOTE_VERSION}" > $HOME/.themes/.${1}
+}
+
+setup_vimix_gtk_themes() {
+  setup_vimix_themes vimix-gtk-themes
+}
+
+setup_vimix_icon_theme() {
+  setup_vimix_themes vimix_icon_theme
+}
+
+execute() {
+  setup_vimix_gtk_themes
+  setup_vimix_icon_theme
+}
+
+execute
+

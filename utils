@@ -1,0 +1,187 @@
+#!/usr/bin/env sh
+echo setup-utilities
+
+# https://www.tutorialspoint.com/unix/unix-basic-operators.htm
+
+SETUP_DIR=$HOME/Me/system/setup
+BIN_DIR=$HOME/.local/bin
+XDG_CONFIG_HOME=$HOME/.config
+
+# System
+
+cd_to_do_OLD() {
+  cd $XDG_CONFIG_HOME/$1
+  echo_pwd
+	
+  list=("$@")
+  list=("${list[@]:1}")
+
+  for do in "${list[@]}"; do
+    eval $do
+    #echo $PWD
+  done
+	
+  cd $SETUP_DIR
+  echo_pwd
+}
+
+create_dir() {
+  echo "Checking for $1 existence"
+    if [ ! -d "$1" ]; then
+      echo "Creating $1"
+      mkdir -p $1
+      echo "$1 created"
+    else
+      echo "$1 already exists"
+  fi
+}
+
+cd_to_do() {
+  echo_pwd
+
+  TARGET=("${list[@]:1}")
+  DO=("${list[@]:2}")
+  
+  cd $XDG_CONFIG_HOME/$TARGET
+  eval $DO
+  cd $SETUP_DIR
+  echo_pwd
+}
+
+echo_pwd() {
+	echo
+	echo -e "\t - now in ${PWD}"
+	echo
+}
+
+# https://get.docker.com/
+# TODO check for /etc/os-release before adopting this option
+get_distribution() {
+	lsb_dist=""
+	# Every system that we officially support has /etc/os-release
+	if [ -r /etc/os-release ]; then
+	        # does this work at all?
+		lsb_dist="$(. /etc/os-release && echo "$ID")"
+	fi
+	# Returning an empty string here should be alright since the
+	# case statements don't act unless you provide an actual value
+	echo "$lsb_dist"
+}
+
+# Utilities
+
+log() {
+  echo -e "\n--- ${1}\n"
+}
+
+#command_exists() { command -v "$@" > /dev/null 2>&1; }
+#command_exists() { type -t "$1" > /dev/null 2>&1; }
+command_exists() { type -t "$1" &> /dev/null }
+
+# https://stackoverflow.com/questions/3074288/get-final-url-after-curl-is-redirected#comment71496988_5300429
+finalurl() { curl --silent --location --head --output /dev/null --write-out '%{url_effective}' -- "$@"; }
+
+# Git
+
+repos() {
+  list=("$@")
+
+  for repo_name in "${list[@]}"; do
+    repo_operations ${repo_name}
+  done
+}
+
+repo_clone() {
+  git clone $1 $2
+}
+
+repo_pull() {
+  cd $XDG_CONFIG_HOME/$1
+  echo -e "\t$PWD\n\tChecking if $1 is up-to-date, otherwise pulling updates."
+  git pull
+  echo 
+}
+
+# Refactor?
+repo_operations() {
+  cd $XDG_CONFIG_HOME
+
+	repo_name=$1
+	#URL=${2-https://github.com/maxdevjs/dotfiles-${repo_name}-config}
+	URL=${2-https://github.com/maxdevjs/dotfiles-${repo_name}}
+	
+  if not_exists_dir $XDG_CONFIG_HOME/$repo_name; then
+    # https://superuser.com/a/1415376
+    if git_remote_url_reachable "$URL"; then
+      echo "cloning ${URL} to ${repo_name}"
+      repo_clone $URL ${repo_name}
+      #git clone $URL ${repo_name}
+    else
+      echo -e "\n\tApparently ${URL} does not exists (or it is not reachable at the moment)\n\tRemember to check it manually."
+      echo
+    fi
+  else
+    #TODO: refactor to update script
+    repo_pull $repo_name
+    #cd $XDG_CONFIG_HOME/$repo_name
+    #echo -e "\t$PWD\n\tChecking if $repo_name is up-to-date, otherwise pulling updates."
+    #git pull
+    #echo
+  fi
+  
+  cd $SETUP_DIR
+}
+
+git_remote_url_reachable() {
+  git ls-remote "$1" CHECK_GIT_REMOTE_URL_REACHABILITY &>/dev/null
+}
+
+# Install apps
+
+#install_flatpak_app() {
+#	if ! command_exists $1; then
+#		flatpak install flathub --user --noninteractive --or-update --ostree-verbose $1
+#	fi
+#}
+
+install_flatpak_apps() {
+  list=("$@")
+	
+  for PACKAGE in "${list[@]}"; do
+    if ! command_exists $PACKAGE; then
+      flatpak install flathub --user --noninteractive --or-update --ostree-verbose $PACKAGE
+    fi
+  done
+}
+
+install_nix_apps() {
+  list=("$@")
+	
+  for PACKAGE in "${list[@]}"; do
+    # https://nix-tutorial.gitlabpages.inria.fr/nix-tutorial/getting-started.html
+    if ! command_exists $PACKAGE; then
+      nix-env -i nixpkgs.$PACKAGE
+    fi
+  done
+}
+
+install_clearos_packages() {
+  # https://askubuntu.com/a/674347
+  #local list=("$@")
+  list=("$@")
+  
+  for PACKAGE in "${list[@]}"; do
+  	INSTALLED=$(sudo swupd bundle-info $PACKAGE | grep Status | cut -d' ' -f2)
+    if [[ $INSTALLED =~ "Not" ]]
+    then
+      sudo swupd bundle-add $PACKAGE
+    else
+    	echo "Bundle ${PACKAGE} already installed"
+    fi
+  done
+}
+
+# https://stackoverflow.com/a/37939589 
+version() { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+
+#cp ./.local/share/applications/restart-budgie.desktop ~/.local/share/applications/

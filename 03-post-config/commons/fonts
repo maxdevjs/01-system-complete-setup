@@ -1,0 +1,137 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../utils
+fi
+
+log "Setting up fonts"
+
+#TODO: refactor this mess
+# - updating to update script 
+
+# https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0
+
+DIR_FONT=$HOME/.local/share/fonts/
+
+setup_font_awesome() {
+  URL_DOWNLOAD=https://github.com/FortAwesome/Font-Awesome/releases/download
+  
+  INSTALLED_VERSION_FILE=$DIR_FONT/fontsawesome-version
+  REMOTE_VERSION=`curl -s https://api.github.com/repos/FortAwesome/Font-Awesome/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")'`
+  
+  FONT=fontawesome-free-${REMOTE_VERSION}-desktop
+  
+  if [ ! -f $INSTALLED_VERSION_FILE ]; then
+    echo "${REMOTE_VERSION}" > $INSTALLED_VERSION_FILE
+
+    clone $REMOTE_VERSION $FONT
+    install_font_awesome $FONT
+
+    fc-cache -f -v
+  else
+    echo -e "\n\t- $FONT already installed. Checking for updates"
+    
+    INSTALLED_VERSION=$(cat $INSTALLED_VERSION_FILE)
+  	
+    if [ $(version $INSTALLED_VERSION) -lt $(version $REMOTE_VERSION) ]; then
+      echo -e "\n\t- updating:$FONT\n"
+      clone $REMOTE_VERSION $FONT
+      install_font_awesome $FONT
+
+      fc-cache -f -v
+    else
+      echo -e "\t- $FONT already up-to-date"
+    fi
+  fi
+}
+
+setup_nerd_fonts() {
+  LIST_FONT_TO_INSTALL=(Hack JetBrainsMono NerdFontsSymbolsOnly)
+
+  URL_DOWNLOAD=https://github.com/ryanoasis/nerd-fonts/releases/download
+  
+  INSTALLED_VERSION_FILE=$DIR_FONT/fontsnerd-version
+  REMOTE_VERSION=`curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")' | cut -c2-`
+  
+  if [ ! -f $INSTALLED_VERSION_FILE ]; then
+    for FONT in "${LIST_FONT_TO_INSTALL[@]}"; do
+      echo -e "\n\t- installing:$FONT\n"
+      clone $REMOTE_VERSION $FONT
+      install_nerd_fonts $FONT
+    done
+    echo "${REMOTE_VERSION}" > $INSTALLED_VERSION_FILE
+    fc-cache -f -v
+  else
+    echo -e "\n\t- Nerd font already installed. Checking for updates"
+    INSTALLED_VERSION=$(cat $INSTALLED_VERSION_FILE)
+  	
+    if [ $(version $INSTALLED_VERSION) -lt $(version $REMOTE_VERSION) ]; then
+      for FONT in "${LIST_FONT_TO_INSTALL[@]}"; do
+        echo -e "\n\t- updating:$FONT\n"
+        clone $REMOTE_VERSION $FONT
+        install_nerd_fonts $FONT
+      done
+      fc-cache -f -v
+    else
+      echo -e "\t- Nerd font already up-to-date"
+    fi
+  fi
+}
+
+clone() {
+  cd /tmp
+  echo -e "\n\t- downloading $URL_DOWNLOAD/$1/$2.zip to $2.zip\n"
+  curl -L $URL_DOWNLOAD/v$1/$2.zip -o $2.zip
+}
+
+install_font_awesome() {
+  cd /tmp
+  unzip ./$1.zip
+  echo -e "\tmoving $1/otfs/*.otf to $DIR_FONT"
+  mv $1/otfs/*.otf $DIR_FONT
+  rm -rf $1
+  cd $SETUP_DIR
+}
+
+install_nerd_fonts() {
+  cd /tmp
+  unzip ./$1.zip -d $1
+  echo -e "\tmoving $1/*.ttf to $DIR_FONT"
+  mv $1/*.ttf $DIR_FONT
+  rm -rf $1
+  cd $SETUP_DIR
+}
+
+execute() {
+  setup_font_awesome
+	#setup_nerd_fonts
+	
+	# TODO: for some reason, even if the url is right,
+	# it does not download a valid zip
+	# https://github.com/FortAwesome/Font-Awesome/releases
+	
+	
+	# Already installed?
+	# https://github.com/googlefonts/noto-emoji
+}
+
+execute
+
+#PACKAGES=(font-awesome-ttf font-manager font-hack-ttf font-jetbrainsmono-ttf source-code-pro)
+
+#setup "${PACKAGES[@]}"
+
+# TODO: how to check it 😁
+# https://github.com/microsoft/cascadia-code/
+# https://api.github.com/repos/microsoft/cascadia-code/releases/latest
+
+# https://rubjo.github.io/victor-mono/
+# https://rubjo.github.io/victor-mono/VictorMonoAll.zip
+
+
+
+
+

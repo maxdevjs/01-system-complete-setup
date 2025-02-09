@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../../utils
+fi
+
+log "Setup fish"
+
+setup_fisher() {
+  echo "--- pulling fish config"
+  if [[ $(fish -c fisher -v) ]]; then
+  	$XDG_CONFIG_HOME/fish/setup/setup
+  fi
+}
+
+# Interesting readings:
+# https://unix.stackexchange.com/questions/38175/difference-between-login-shell-and-non-login-shell/46856#46856
+
+# https://www.cyberciti.biz/faq/change-my-default-shell-in-linux-using-chsh/
+execute() {
+  SHELL_CURRENT=`echo $SHELL`
+  # TODO: check nix path
+  SHELL_NEW=/usr/bin/fish
+
+  # May require to log out and back in
+
+  if [[ ! $SHELL_CURRENT =~ fish ]]; then  
+    echo -e "Current SHELL is $SHELL_CURRENT"
+
+    # https://blog.liang2.tw/posts/2017/01/without-chsh/
+    if "$SHELL_NEW" -c 'echo "Test fish running" >/dev/null' ; then
+      chsh -s $SHELL_NEW maxdevjs
+      setup_fisher
+    else
+      echo "Failed to launch fish shell. Go check its installation!"
+      echo "Fall back to default shell $SHELL ..."
+    fi
+  fi
+}
+
+execute
+

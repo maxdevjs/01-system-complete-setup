@@ -1,0 +1,60 @@
+#!/usr/bin/env sh
+echo setup-system-fish
+
+# Includes setup-utilities only for standalone (directly calling)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ./setup-utilities
+fi
+
+# May require to log out and back in
+
+setup_config() {
+  echo "--- pulling fish config"
+  REPOS=(fish)
+  repos "${REPOS[@]}"
+  if [[ $(fish -c fisher -v) ]]; then
+  	$XDG_CONFIG_HOME/fish/setup/setup
+  fi
+}
+
+# Interesting readings:
+# https://unix.stackexchange.com/questions/38175/difference-between-login-shell-and-non-login-shell/46856#46856
+
+# https://www.cyberciti.biz/faq/change-my-default-shell-in-linux-using-chsh/
+setup() {
+  SHELL_CURRENT=`echo $SHELL`
+  SHELL_NEW=/usr/bin/fish
+  	
+  # Needed to avoid fish to create an empty config dir that would break this process
+  setup_config
+
+  if [[ ! $SHELL_CURRENT =~ fish ]]; then  
+  	echo -e "Current SHELL is $SHELL_CURRENT"
+
+    # https://blog.liang2.tw/posts/2017/01/without-chsh/
+    if "$SHELL_NEW" -c 'echo "Test fish running" >/dev/null' ; then
+      chsh -s $SHELL_NEW maxdevjs
+      # fisher setup
+      $XDG_CONFIG_HOME/fish/setup/setup
+    else
+      echo "Failed to launch fish shell. Go check its installation!"
+      echo "Fall back to default shell $SHELL ..."
+    fi
+  else
+    # TODO: extract to update
+    FISHER_INSTALLED_VERSION=$(fish -c 'fisher -v' | cut -d' ' -f3)
+    FISHER_REMOTE_VERSION=`curl -s https://api.github.com/repos/jorgebucaran/fisher/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")' | cut -c1-`
+
+    if [ $(version $FISHER_INSTALLED_VERSION) -lt $(version $FISHER_REMOTE_VERSION) ]; then
+      echo -e "Updating fisher to ${FISHER_REMOTE_VERSION}"
+      setup_config
+      fish -c fisher update
+    else
+      echo "Installed version (${FISHER_INSTALLED_VERSION}) is up to date (remote is ${FISHER_REMOTE_VERSION})"
+    fi
+  fi
+}
+
+setup

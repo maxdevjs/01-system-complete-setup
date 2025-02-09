@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../utils
+fi
+
+log "Setting up dotfiles"
+
+execute() {
+  # toot
+  REPOS=(fish kitty newsboat nnn nom nvim tmux)
+  repos "${REPOS[@]}"
+
+  #PACKAGES_SYSTEM_I3=(picom dunst i3 maim nitrogen polybar rofi)
+  #repos "${PACKAGES_SYSTEM_I3[@]}"
+}
+
+execute
+

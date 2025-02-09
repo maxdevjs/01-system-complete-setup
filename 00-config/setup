@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../utils
+fi
+
+log "Configs setup"
+
+execute() {
+  #TODO: xWayland?
+  #setxkbmap -option caps:swapescape >> $HOME/.profile
+  #setxkbmap -option 'caps:escape' >> $HOME/.profile
+  
+  cp ./face.icon $HOME/.face
+  
+  if [[ $(command -v gnome-shell) ]]; then
+    . ./gnome/setup
+  fi
+}
+
+execute
+

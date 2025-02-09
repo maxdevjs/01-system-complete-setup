@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../utils
+fi
+
+log "Installing Gnome extensions"
+
+execute() {
+  # install 
+  # https://github.com/essembeh/gnome-extensions-cli
+  # Extensions https://apps.gnome.org/Extensions/
+  # Extensions Manager https://github.com/mjakeman/extension-manager
+  # gnome-shell-extension-tool
+  # gnome-extensions list -d --enabled 
+  
+  gnome-extensions install burn-my-windows@schneegans.github.com #.zip
+  gnome-extensions install clipboard-history@alexsaveau.dev
+  gnome-extensions install emoji-copy@felipeftn
+  # gnome-extensions install docker@stickman_0x00.com
+  # gnome-extensions install gnomebedtime@ionutbortis.gmail.com
+  
+  gnome-extensions enable apps-menu@gnome-shell-extensions.gcampax.github.com
+  gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com
+  # for radiotray-ng: https://extensions.gnome.org/extension/615/appindicator-support/
+	# https://linuxhint.com/installing_gnome_extensions_ubuntu/
+	# https://itsfoss.com/gnome-shell-extensions/
+	# https://itsfoss.com/best-gnome-extensions/
+	# https://extensions.gnome.org/extension/5568/monitor-window-switcher-2/
+	# gnome-extensions install gsconnect@andyholmes.github.io
+	# gnome-extensions install clipboard-indicator@tudmotu.com
+	# user-theme@gnome-shell-extensions.gcampax.github.com
+	# gnome-extensions install advanced-alt-tab@G-dH.github.com
+  # gnome-extensions install tilingshell@ferrarodomenico.com # https://github.com/domferr/tilingshell
+  # gnome-extensions install thinkpad-battery-threshold@marcosdalvarez.org
+  # gnome-extensions install desktop-cube@schneegans.github.com.zip
+  # vitals Emoji copy
+  # Vitals@CoreCoding.com  SomaFm-Radio@alireza6677.gmail.com 
+}
+
+execute
+

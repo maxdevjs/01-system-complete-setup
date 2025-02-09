@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+echo setup-initial-clearlinux
+
+sudo swupd update
+sudo swupd bundle-add c-basic
+

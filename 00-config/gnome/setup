@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../utils
+fi
+
+log "Gnome setup"
+
+execute() {
+	#https://computingforgeeks.com/how-to-turn-off-terminal-beep-sound-on-linux/
+	# Settings -> Sound -> disable Systems Sounds
+	#dconf write /org/gnome/desktop/sound/event-sounds false
+	gsettings set org.gnome.desktop.sound event-sounds false
+	#dconf write /org/gnome/desktop/input-sources/xkb-options "['caps:none']"
+	gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
+	
+	gsettings set org.gnome.desktop.session idle-delay 90
+	gsettings set org.gnome.desktop.peripherals.mouse natural-scroll false
+	gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
+}
+
+execute
+

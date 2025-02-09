@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../utils
+fi
+
+log "Commons setup"
+
+execute() {
+  #. ./desktop-files # if having issues with nix installed apps as kitty etc
+  #. ./docker
+  . ./fonts
+  . ./shells/fish
+  . ./themes
+
+  #TODO: refactor to something more useful
+  NNN_PLUGINS=(nnn 'rm -r ./plugins > /dev/null 2>&1' 'curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh')
+  cd_to_do "${NNN_PLUGINS[@]}"
+
+  # https://akos.ma/blog/cute-battery-on-your-tmux/
+  #TODO: fix plugin install
+  # https://github.com/tmux-plugins/tpm/blob/master/docs/managing_plugins_via_cmd_line.md
+  if [ not_exists_dir $XDG_CONFIG_HOME/tmux/plugins ]; then
+    git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
+    $XDG_CONFIG_HOME/tmux/plugins/tpm/bin/install_plugins
+    $XDG_CONFIG_HOME/tmux/plugins/tpm/bin/update_plugins all
+  fi
+}
+
+execute
+
