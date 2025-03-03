@@ -1,17 +1,19 @@
 #!/usr/bin/env sh
-echo -e "\n--- Setting up desktop files\n"
-
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
   . ../utils
+else
+  echo $PWD
 fi
 
+log "Setting up desktop files"
+
 execute() {
-	cp ./kitty/kitty* $HOME/.local/share/applications
-	#cp ./vscode/*.desktop $HOME/.local/share/applications
-	update-desktop-database $HOME/.local/share/applications
+  cp ./kitty/kitty* $HOME/.local/share/applications
+  #cp ./vscode/*.desktop $HOME/.local/share/applications
+  update-desktop-database $HOME/.local/share/applications
 }
 
 execute

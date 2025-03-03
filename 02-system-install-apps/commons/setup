@@ -1,16 +1,22 @@
 #!/usr/bin/env sh
-
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
   . ../../utils
+else
+  cd commons
+  echo $PWD
 fi
 
 log "Commons setup"
 
 execute() {
-  ./flatpak
+  . ./flatpak
+  echo $PWD
+  . ./kitty
+  echo $PWD
+  . ./nvim
 }
 
 execute

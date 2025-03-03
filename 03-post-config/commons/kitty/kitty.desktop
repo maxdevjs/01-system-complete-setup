@@ -5,6 +5,7 @@ Name=kitty
 GenericName=Terminal emulator
 Comment=Fast, feature-rich, GPU based terminal
 TryExec=/home/maxdevjs/.local/bin/kitty
+StartupNotify=true
 Exec=/home/maxdevjs/.local/bin/kitty
 Icon=kitty
 Categories=System;TerminalEmulator;

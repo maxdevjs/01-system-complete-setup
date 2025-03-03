@@ -1,10 +1,12 @@
 #!/usr/bin/env sh
-
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
-  . ../utils
+  . ../../../utils
+else
+  cd 03-post-config
+  echo $PWD
 fi
 
 log "Post set up: depends on dotfiles"

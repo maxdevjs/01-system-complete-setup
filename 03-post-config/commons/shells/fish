@@ -1,10 +1,12 @@
 #!/usr/bin/env sh
-
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
   . ../../../utils
+else
+  cd shells
+  echo $PWD
 fi
 
 log "Setup fish"
@@ -23,7 +25,8 @@ setup_fisher() {
 execute() {
   SHELL_CURRENT=`echo $SHELL`
   # TODO: check nix path
-  SHELL_NEW=/usr/bin/fish
+  #SHELL_NEW=/usr/bin/fish
+  SHELL_NEW=$HOME/.nix-profile/bin/fish
 
   # May require to log out and back in
 
@@ -32,8 +35,12 @@ execute() {
 
     # https://blog.liang2.tw/posts/2017/01/without-chsh/
     if "$SHELL_NEW" -c 'echo "Test fish running" >/dev/null' ; then
+      #sudo echo $SHELL_NEW >> /etc/shells
+      sudo sh -c "echo $(which $SHELL_NEW) >> /etc/shells"
+      #echo $(which $SHELL_NEW) | sudo tee -a /etc/shells
       chsh -s $SHELL_NEW maxdevjs
-      setup_fisher
+      echo -e "Current SHELL is now $SHELL"
+      #setup_fisher
     else
       echo "Failed to launch fish shell. Go check its installation!"
       echo "Fall back to default shell $SHELL ..."

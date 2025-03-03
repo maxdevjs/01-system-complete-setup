@@ -1,28 +1,35 @@
 #!/usr/bin/env sh
-
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
   . ../utils
+else
+  cd 02-system-install-apps
+  echo $PWD
 fi
 
 log "Apps install"
 
 execute_distro_specific() {
   if [[ $(command -v eopkg) ]]; then # Solus
-    ./distro-specific/solus/setup
+    . ./distro-specific/solus/setup
   elif [[ $(command -v swupd) ]]; then # ClearLinux
-    ./distro-specific/clearlinux/setup
+    . ./distro-specific/clearlinux/setup
   fi
   # Serpent OS
 }
 
 execute() {
   execute_distro_specific
-  ./commons/setup
-  ./nix/setup
-  ./DE/gnome/setup
+  cd ../../
+  . ./commons/setup
+  cd ../
+  echo $PWD
+  . ./nix/setup
+  cd ../
+  echo $PWD
+  . ./DE/gnome/setup
 }
 
 execute

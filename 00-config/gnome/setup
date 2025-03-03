@@ -10,16 +10,31 @@ fi
 log "Gnome setup"
 
 execute() {
-	#https://computingforgeeks.com/how-to-turn-off-terminal-beep-sound-on-linux/
-	# Settings -> Sound -> disable Systems Sounds
-	#dconf write /org/gnome/desktop/sound/event-sounds false
-	gsettings set org.gnome.desktop.sound event-sounds false
-	#dconf write /org/gnome/desktop/input-sources/xkb-options "['caps:none']"
-	gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
+  #https://computingforgeeks.com/how-to-turn-off-terminal-beep-sound-on-linux/
+  # Settings -> Sound -> disable Systems Sounds
+  #dconf write /org/gnome/desktop/sound/event-sounds false
+  gsettings set org.gnome.desktop.sound event-sounds false
+  #dconf write /org/gnome/desktop/input-sources/xkb-options "['caps:none']"
+  gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
 	
-	gsettings set org.gnome.desktop.session idle-delay 90
-	gsettings set org.gnome.desktop.peripherals.mouse natural-scroll false
-	gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
+  gsettings set org.gnome.desktop.session idle-delay 90
+  gsettings set org.gnome.desktop.peripherals.mouse natural-scroll false
+  gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
+	
+  # Custom keyboard shortcuts
+  #https://askubuntu.com/questions/597395/how-to-set-custom-keyboard-shortcuts-from-terminal
+  # Gnome Terminal
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Launch Gnome Terminal'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command '/usr/bin/gnome-terminal'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Super><Shift>t'
+  # Kitty
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Launch Kitty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command '/home/maxdevjs/.local/bin/kitty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Super>Return'
+  #TODO Gitg example, does not work (works if set in Settings)
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'Launch Gitg'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command '"flatpak run org.gnome.gitg"'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Super><Shift>g'
 }
 
 execute

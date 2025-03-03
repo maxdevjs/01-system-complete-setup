@@ -5,9 +5,15 @@ echo setup-dev-docker
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
-  . ./setup-utilities
+  . ../../../utils
+else
+  cd DE/gnome
+  DIR=$PWD
 fi
 
+log "Docker"
+
+#TODO: refactor. Install to step 02
 function setup () {
   if ! command_exists docker; then
     #sudo swupd bundle-add containers-basic docker-compose

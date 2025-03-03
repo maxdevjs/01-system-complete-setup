@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-
+cd distro-specific/solus
+echo $PWD
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
@@ -14,7 +15,11 @@ execute() {
   # https://discuss.getsol.us/d/3636-new-to-development-on-linux/6
   #sudo eopkg ur
   sudo eopkg upgrade
-  sudo eopkg install -c system.devel >/dev/null 2>&1
+  sudo eopkg install -y -c system.devel #>/dev/null 2>&1
+  sudo eopkg remove -c libreoffice-common
+
+  sudo eopkg install gnome-boxes
+  sudo eopkg install virt-manager
 }
 
 execute

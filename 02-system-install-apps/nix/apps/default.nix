@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-
+cd apps
+DIR=$PWD
 # Includes setup-utilities only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
@@ -43,5 +44,5 @@ execute() {
   install_nix_apps "${SOCIAL[@]}"
 }
 
-execute
+#execute
 

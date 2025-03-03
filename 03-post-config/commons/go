@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-cd nix
+
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
@@ -7,15 +7,13 @@ if [ $0 ]; then
   . ../../utils
 fi
 
-log "Nix apps install"
+log "Go setup"
 
-execute () {
-  . ./apps/default.nix
-  cd ..
-  . ./dev/default.nix
-  cd ..
-  . ./sys/default.nix
-  cd ..
+execute() {
+  if [ ! -d "$1" ]; then
+    mkdir $GOPATH/bin
+  fi
+  ln -s $HOME/.nix-profile/bin/go* $GOBIN
 }
 
 execute

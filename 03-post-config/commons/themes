@@ -17,16 +17,20 @@ setup_vimix_themes() {
   wget https://github.com/vinceliuice/${1}/archive/master.zip -O ${1}.zip
   unzip ${1}.zip
   cd ${1}-master
-  ./install.sh
+  if [[ ${1} =~ "Vimix-gtk-themes" ]]; then
+        ./install.sh -t all -s all
+  else
+    ./install.sh -a
+  fi
   echo "${REMOTE_VERSION}" > $HOME/.themes/.${1}
 }
 
 setup_vimix_gtk_themes() {
-  setup_vimix_themes vimix-gtk-themes
+  setup_vimix_themes Vimix-gtk-themes
 }
 
 setup_vimix_icon_theme() {
-  setup_vimix_themes vimix_icon_theme
+  setup_vimix_themes Vimix-icon-theme
 }
 
 execute() {

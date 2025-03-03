@@ -3,7 +3,7 @@ echo setup-utilities
 
 # https://www.tutorialspoint.com/unix/unix-basic-operators.htm
 
-SETUP_DIR=$HOME/Me/system/setup
+SETUP_DIR=$HOME/Me/System/setup
 BIN_DIR=$HOME/.local/bin
 XDG_CONFIG_HOME=$HOME/.config
 
@@ -76,7 +76,7 @@ log() {
 
 #command_exists() { command -v "$@" > /dev/null 2>&1; }
 #command_exists() { type -t "$1" > /dev/null 2>&1; }
-command_exists() { type -t "$1" &> /dev/null }
+command_exists() { type -t "$1" &> /dev/null 2>&1; }
 
 # https://stackoverflow.com/questions/3074288/get-final-url-after-curl-is-redirected#comment71496988_5300429
 finalurl() { curl --silent --location --head --output /dev/null --write-out '%{url_effective}' -- "$@"; }
@@ -110,7 +110,7 @@ repo_operations() {
 	#URL=${2-https://github.com/maxdevjs/dotfiles-${repo_name}-config}
 	URL=${2-https://github.com/maxdevjs/dotfiles-${repo_name}}
 	
-  if not_exists_dir $XDG_CONFIG_HOME/$repo_name; then
+  if ! $XDG_CONFIG_HOME/$repo_name; then
     # https://superuser.com/a/1415376
     if git_remote_url_reachable "$URL"; then
       echo "cloning ${URL} to ${repo_name}"
@@ -160,7 +160,7 @@ install_nix_apps() {
   for PACKAGE in "${list[@]}"; do
     # https://nix-tutorial.gitlabpages.inria.fr/nix-tutorial/getting-started.html
     if ! command_exists $PACKAGE; then
-      nix-env -i nixpkgs.$PACKAGE
+      nix-env -iA nixpkgs.$PACKAGE
     fi
   done
 }

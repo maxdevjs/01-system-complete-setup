@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../utils
+fi
+
+log "Kitty installation"
+
+execute() {
+  if ! command_exists kitty; then
+    # https://nixos.org/manual/nix/stable/introduction.html
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    cp ./kitty/kitty* $HOME/.local/share/applications
+    update-desktop-database $HOME/.local/share/applications
+  fi
+}
+
+execute

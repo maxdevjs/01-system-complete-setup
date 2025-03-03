@@ -1,19 +1,27 @@
 #!/usr/bin/env sh
-
+cd commons
+echo $PWD
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
   . ../../utils
+else
+  cd commons
+  echo $PWD
 fi
 
 log "Commons setup"
 
 execute() {
-  #. ./desktop-files # if having issues with nix installed apps as kitty etc
+  # having issues with nix installed kitty: manually installed
+  . ./desktop-files
   #. ./docker
-  . ./fonts
+  #. ./fonts
   . ./shells/fish
+  cd ..
+  echo $PWD
+  . ./go
   . ./themes
 
   #TODO: refactor to something more useful
@@ -23,11 +31,17 @@ execute() {
   # https://akos.ma/blog/cute-battery-on-your-tmux/
   #TODO: fix plugin install
   # https://github.com/tmux-plugins/tpm/blob/master/docs/managing_plugins_via_cmd_line.md
-  if [ not_exists_dir $XDG_CONFIG_HOME/tmux/plugins ]; then
+  if [ ! -d "$XDG_CONFIG_HOME/tmux/plugins" ]; then
     git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
     $XDG_CONFIG_HOME/tmux/plugins/tpm/bin/install_plugins
     $XDG_CONFIG_HOME/tmux/plugins/tpm/bin/update_plugins all
   fi
+  
+  #TODO: watch https://www.youtube.com/watch?v=cIEvKxRpsIg
+  sudo systemctl enable fstrim.timer
+  sudo systemctl start fstrim.timer
+  
+  sudo sysctl vm.swappiness=10
 }
 
 execute

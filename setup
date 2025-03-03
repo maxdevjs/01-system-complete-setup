@@ -4,6 +4,8 @@ if [ $0 ]; then
   . ./utils
 fi
 
+DIR=$PWD
+
 bin() {
   create_dir $HOME/.local/bin
   git clone https://github.com/maxdevjs/scripts $HOME/.local/scripts
@@ -11,10 +13,17 @@ bin() {
 
 execute() {
   bin
-  ./00-config/setup
-  ./01-dotfiles/setup
-  ./02-system-install-apps/setup
-  ./03-post-config/setup
+  . ./00-config/setup
+  cd $DIR
+  . ./01-dotfiles/setup
+  cd $DIR
+  . ./02-system-install-apps/setup
+  cd ../../../
+  . ./03-post-config/setup
+  
+  log "Installation done! Restart and then install flatpak apps"
+  log "Now restart the 💻"
+  log "Then change shell to Fish and install Flatpak apps"
 }
 
 execute

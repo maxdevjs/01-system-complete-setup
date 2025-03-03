@@ -1,10 +1,12 @@
 #!/usr/bin/env sh
-
 # Includes 'utils' only for standalone (direct call)
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
   . ../../../utils
+else
+  cd DE/gnome
+  DIR=$PWD
 fi
 
 log "Installing Gnome extensions"
@@ -17,6 +19,7 @@ execute() {
   # gnome-shell-extension-tool
   # gnome-extensions list -d --enabled 
   
+  # Must be downloaded before
   gnome-extensions install burn-my-windows@schneegans.github.com #.zip
   gnome-extensions install clipboard-history@alexsaveau.dev
   gnome-extensions install emoji-copy@felipeftn

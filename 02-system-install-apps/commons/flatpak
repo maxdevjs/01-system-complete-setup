@@ -20,34 +20,27 @@ log "Flatpak setup and apps install"
   # flatpak repair --user
   
 execute() {
-  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  #flatpak remote-add --if-not-exists flathub https://flatpak.elementary.io/repo.flatpakrepo
+  #https://docs.flatpak.org/en/latest/using-flatpak.html
+  #https://flatpak.org/setup/Solus
+  #https://discourse.flathub.org/t/flatpak-run-error-no-remote-refs-found-similar-to-flathub/6204
+  #flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  #flatpak remote-add --user --if-not-exists elementary https://flatpak.elementary.io/repo.flatpakrepo
 
   #flatpak uninstall --noninteractive --unused # --delete-data
   flatpak update
   # https://flathub.org/appse
   
   # https://github.com/mjakeman/extension-manager
-  #install_flatpak_app com.mattjakeman.ExtensionManager
-  #install_flatpak_app org.gnome.Extensions
-  #install_flatpak_app com.github.tchx84.Flatseal
   GNOME_EXTENSIONS_TOOLS=(org.gnome.Extensions com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal) 
   install_flatpak_apps "${GNOME_EXTENSIONS_TOOLS[@]}"
 
-  #install_flatpak_app com.google.Chrome
-  #install_flatpak_app com.google.ChromeDev
   BROWSERS_GOOGLE=(com.google.Chrome com.google.ChromeDev) 
   install_flatpak_apps "${BROWSERS_GOOGLE[@]}"
 
-  #install_flatpak_app  com.microsoft.Edge
-  #install_flatpak_app com.microsoft.EdgeDev
   BROWSERS_MICROSOFT=(com.microsoft.Edge com.microsoft.EdgeDev) 
   install_flatpak_apps "${BROWSERS_MICROSOFT[@]}"
 
-  # DEV
-  #install_flatpak_app io.podman_desktop.podman_desktop
-  #install_flatpak_app com.github.marhkb.Pods
-  #install_flatpak_app com.github.sdv43.whaler
   DEV_CONTAINERS=(io.podman_desktop.podman_desktop com.github.marhkb.Pods com.github.sdv43.whaler) 
   install_flatpak_apps "${DEV_CONTAINERS[@]}"
   
@@ -57,32 +50,27 @@ execute() {
   
   DEV_CREATIVE=(org.processing.processingide)
   install_flatpak_apps "${DEV_CREATIVE[@]}"
-  
-  #install_flatpak_app org.gnome.gitg
+
   DEV_GIT=(org.gnome.gitg)
   install_flatpak_apps "${DEV_GIT[@]}"
 
-  #install_flatpak_app org.flameshot.Flameshot
-  #install_flatpak_app org.gimp.GIMP
-  #install_flatpak_app nl.hjdskes.gcolor3
-  #install_flatpak_app org.inkscape.Inkscape
   GRAPHICS=(org.flameshot.Flameshot org.gimp.GIMP nl.hjdskes.gcolor3 org.inkscape.Inkscape)
   install_flatpak_apps "${GRAPHICS[@]}"
   
   # https://www.internet-radio.com/
   # partyvibe https://www.internet-radio.com/station/pvc-psytrance/ http://www.partyviberadio.com:8010/listen.pls?sid=1&t=.mp3
-  #install_flatpak_app de.haeckerfelix.Shortwave
-  # com.rafaelmardojai.Blanket
-  # io.gitlab.Goodvibes com.plexamp.Plexamp
+
   MULTIMEDIA=(de.haeckerfelix.Shortwave)
   install_flatpak_apps "${MULTIMEDIA[@]}"
-  
-  #install_flatpak_app  org.gnome.FontManager
-  #install_flatpak_app org.gnome.gedit
-  #install_flatpak_app com.github.jeromerobert.pdfarranger
-  # net.fsuae.FS-UAE org.localsend.localsend_app 
+
   SYSTEM_TOOLS=(dev.edfloreshz.CosmicTweaks org.gnome.FontManager org.gnome.gedit )
   install_flatpak_apps "${SYSTEM_TOOLS[@]}"
+  
+  #This flatpak does not have write access to ~/.local/share/applications and ~/.local/share/icons, so it cannot install or uninstall PWAs.
+  #https://discourse.flathub.org/t/installing-pwas-flatpak-has-no-write-access/6859
+  mkdir $HOME/.local/share/icons
+  flatpak override --user --filesystem=~/.local/share/applications --filesystem=~/.local/share/icons com.google.Chrome
+  flatpak override --user --filesystem=~/.local/share/applications --filesystem=~/.local/share/icons com.google.ChromeDev
 }
 
 execute
