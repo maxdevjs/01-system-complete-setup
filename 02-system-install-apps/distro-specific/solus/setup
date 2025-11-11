@@ -16,11 +16,13 @@ execute() {
   #sudo eopkg ur
   sudo eopkg upgrade
   sudo eopkg install -y -c system.devel #>/dev/null 2>&1
-  sudo eopkg remove -c libreoffice-common
+  sudo eopkg remove -c libreoffice-common thunderbird
 
+  #https://eclypsium.com/blog/linux-commands-to-check-the-state-of-firmware/
+  sudo eopkg install fwupd
   sudo eopkg install gnome-boxes
+  sudo eopkg install solseek
   sudo eopkg install virt-manager
 }
 
 execute
-
