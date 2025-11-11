@@ -12,7 +12,7 @@ log "Setting up dotfiles"
 
 execute() {
   # toot
-  REPOS=(fish kitty newsboat nnn nom nvim tmux)
+  REPOS=(fish kitty hypr newsboat nnn nom nvim tmux waybar)
   repos "${REPOS[@]}"
 
   #PACKAGES_SYSTEM_I3=(picom dunst i3 maim nitrogen polybar rofi)

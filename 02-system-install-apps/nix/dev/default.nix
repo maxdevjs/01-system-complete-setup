@@ -15,12 +15,12 @@ execute() {
   DEV_DATABASES=(lazysql tabiew)
   install_nix_apps "${DEV_DATABASES[@]}"
 	
-  # docker-compose nerdctl x11docker podman
-  DEV_DOCKER=(dive docker lazydocker)
+  # docker docker-compose nerdctl x11docker podman
+  DEV_DOCKER=(dive lazydocker)
   #install_nix_apps "${DEV_DOCKER[@]}"
 	
   # git git-extras git-cola jujutsu
-  DEV_GIT=(delta gh lazygit tig) 
+  DEV_GIT=(delta gh lazygit mitmproxy tig) 
   install_nix_apps "${DEV_GIT[@]}"
 
   # insomnia zeal

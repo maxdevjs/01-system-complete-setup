@@ -20,6 +20,8 @@ log "Flatpak setup and apps install"
   # flatpak repair --user
   
 execute() {
+  # https://circle.gnome.org/
+  #
   #https://docs.flatpak.org/en/latest/using-flatpak.html
   #https://flatpak.org/setup/Solus
   #https://discourse.flathub.org/t/flatpak-run-error-no-remote-refs-found-similar-to-flathub/6204
@@ -40,19 +42,34 @@ execute() {
 
   BROWSERS_MICROSOFT=(com.microsoft.Edge com.microsoft.EdgeDev) 
   install_flatpak_apps "${BROWSERS_MICROSOFT[@]}"
+  
+  # https://librewolf.net/installation/linux/#flatpak
+  # https://flathub.org/apps/app.zen_browser.zen
+  BROWSERS_OTHERS=(io.gitlab.librewolf-community app.zen_browser.zen) 
+  install_flatpak_apps "${BROWSERS_OTHERS[@]}"
 
-  DEV_CONTAINERS=(io.podman_desktop.podman_desktop com.github.marhkb.Pods com.github.sdv43.whaler) 
+  COMMUNICATIONS=(org.gnome.Polari dev.geopjr.Tuba)
+  install_flatpak_apps "${COMMUNICATIONS[@]}"
+
+  DEV=(io.gitlab.liferooter.TextPieces re.sonny.Workbench)
+  install_flatpak_apps "${DEV}[@]"
+
+  DEV_CONTAINERS=(io.podman_desktop.podman_desktop com.github.marhkb.Pods app.devsuite.Ptyxis com.github.sdv43.whaler) 
   install_flatpak_apps "${DEV_CONTAINERS[@]}"
   
   # https://community.clearlinux.org/t/fail-to-install-vscode/6920/4
   #DEV_TOOLS=(com.github.muriloventuroso.easyssh com.getpostman.Postman com.visualstudio.code org.sqlitebrowser.sqlitebrowser com.github.alecaddd.sequeler com.github.artemanufrij.regextester com.sublimemerge.App com.github.mdh34.quickdocs)
   #install_flatpak_apps "${DEV_TOOLS[@]}"
-  
+
+  # app.drey.Elastic io.gitlab.gregorni.Letterpress
   DEV_CREATIVE=(org.processing.processingide)
   install_flatpak_apps "${DEV_CREATIVE[@]}"
 
   DEV_GIT=(org.gnome.gitg)
   install_flatpak_apps "${DEV_GIT[@]}"
+
+  EDITORS=(org.gnome.gitlab.somas.Apostrophe)
+  install_flatpak_apps "${EDITORS[@]}"
 
   GRAPHICS=(org.flameshot.Flameshot org.gimp.GIMP nl.hjdskes.gcolor3 org.inkscape.Inkscape)
   install_flatpak_apps "${GRAPHICS[@]}"
@@ -60,12 +77,18 @@ execute() {
   # https://www.internet-radio.com/
   # partyvibe https://www.internet-radio.com/station/pvc-psytrance/ http://www.partyviberadio.com:8010/listen.pls?sid=1&t=.mp3
 
-  MULTIMEDIA=(de.haeckerfelix.Shortwave)
+  MULTIMEDIA=(com.rafaelmardojai.Blanket io.github.revisto.drum-machine com.github.johnfactotum.Foliate io.github.seadve.Mousai org.gnome.Podcasts ca.edestcroix.Recordbox de.haeckerfelix.Shortwave)
   install_flatpak_apps "${MULTIMEDIA[@]}"
 
-  SYSTEM_TOOLS=(dev.edfloreshz.CosmicTweaks org.gnome.FontManager org.gnome.gedit )
+  # app.drey.Warp
+  SECURITY=(org.gnome.World.Secrets)
+  install_flatpak_apps "${SECURITY[@]}"
+
+  SYSTEM_TOOLS=(org.freedesktop.Bustle dev.edfloreshz.CosmicTweaks org.gnome.FontManager org.gnome.gedit io.missioncenter.MissionCenter net.nokyan.Resources)
   install_flatpak_apps "${SYSTEM_TOOLS[@]}"
-  
+
+  TOOLS=(xyz.safeworlds.hiit dev.bragefuglseth.Keypunch org.gnome.World.Iotas io.github.diegoivan.pdf_metadata_editor io.github.idevecore.Valuta)
+  install_flatpak_apps "${TOOLS[@]}"
   #This flatpak does not have write access to ~/.local/share/applications and ~/.local/share/icons, so it cannot install or uninstall PWAs.
   #https://discourse.flathub.org/t/installing-pwas-flatpak-has-no-write-access/6859
   mkdir $HOME/.local/share/icons

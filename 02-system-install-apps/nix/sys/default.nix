@@ -27,11 +27,14 @@ execute() {
   SYSTEM_EXTRA=(bat eza fastfetch fd fzf glow jq jqp neofetch nnn pgrep ripgrep ripgrep-all silver-searcher tldr up yt-dlp) # (rga ag)
   install_nix_apps "${SYSTEM_EXTRA[@]}"
 
+  # gnome-extensions-cli
+  #GNOME=(gnome-browser-connector)
+
   SYSTEM_I3=(dunst i3 maim nitrogen picom polybar rofi)
   install_nix_apps "${SYSTEM_I3[@]}"
 
   # media controls, ...
-  SYSTEM_MULTIMEDIA=(amixer feh mpd mpv pavucontrol)
+  SYSTEM_MULTIMEDIA=(amixer feh mpd mpg123 mpv pavucontrol)
   install_nix_apps "${SYSTEM_MULTIMEDIA[@]}"
 
   # codecs, ...
@@ -55,7 +58,7 @@ execute() {
   SYSTEM_SHELL=(fish zsh)
   install_nix_apps "${SYSTEM_SHELL[@]}"
   
-  #  localsend gnome-extensions-cli
+  #  localsend 
   SYSTEM=(inxi)
   install_nix_apps "${SYSTEM[@]}"
 

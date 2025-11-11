@@ -5,7 +5,7 @@ echo setup-dev-docker
 # use of this script (otherwise the script is called from setup
 # and the import is not necessary)
 if [ $0 ]; then
-  . ../../../utils
+  . ../../utils
 else
   cd DE/gnome
   DIR=$PWD
@@ -17,9 +17,12 @@ log "Docker"
 function setup () {
   if ! command_exists docker; then
     #sudo swupd bundle-add containers-basic docker-compose
-    PACKAGES_DOCKER=(containers-basic docker-compose)
-    install_packages "${PACKAGES_DOCKER[@]}"
-
+    #PACKAGES_DOCKER=(containers-basic docker-compose)
+    #install_packages "${PACKAGES_DOCKER[@]}"
+    #sudo eopkg install -y -c system.devel #>/dev/null 2>&1
+    # TODO: this is Solus centered now
+    # https://help.getsol.us/docs/user/software/development/containers/#docker
+    sudo eopkg install docker docker-compose
     # https://www.docker.com/products/docker-desktop/
     # https://docs.docker.com/desktop/install/linux-install/
     # sudo swupd bundle-add qemu-guest-additions
@@ -33,7 +36,8 @@ function setup () {
     # https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
     # https://stackoverflow.com/questions/49434650/how-to-add-a-user-to-a-group-without-logout-login-bash-script
     # https://superuser.com/questions/272061/reload-a-linux-users-group-assignments-without-logging-out#comment1036933_609141
-    sudo groupadd docker
+    getent group docker || sudo groupadd docker
+    # TODO: apparently eopkg does everything but this:
     sudo usermod -aG docker $USER
     newgrp docker #&& exec sudo su -l $USER
     
@@ -50,7 +54,7 @@ function setup () {
     
   fi
   
-  if [[ systemctl status docker.service | grep disabled ]]
+  if [ systemctl status docker.service | grep disabled ]
   then
     # https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot
     sudo systemctl enable docker.service
