@@ -77,7 +77,7 @@ execute() {
   # https://www.internet-radio.com/
   # partyvibe https://www.internet-radio.com/station/pvc-psytrance/ http://www.partyviberadio.com:8010/listen.pls?sid=1&t=.mp3
 
-  MULTIMEDIA=(com.rafaelmardojai.Blanket io.github.revisto.drum-machine com.github.johnfactotum.Foliate io.github.seadve.Mousai org.gnome.Podcasts ca.edestcroix.Recordbox de.haeckerfelix.Shortwave)
+  MULTIMEDIA=(com.rafaelmardojai.Blanket io.github.revisto.drum-machine com.github.johnfactotum.Foliate io.github.seadve.Mousai org.js.nuclear.Nuclear org.gnome.Podcasts ca.edestcroix.Recordbox de.haeckerfelix.Shortwave)
   install_flatpak_apps "${MULTIMEDIA[@]}"
 
   # app.drey.Warp
