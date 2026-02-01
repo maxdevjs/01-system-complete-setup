@@ -45,7 +45,7 @@ execute() {
   
   # https://librewolf.net/installation/linux/#flatpak
   # https://flathub.org/apps/app.zen_browser.zen
-  BROWSERS_OTHERS=(io.gitlab.librewolf-community app.zen_browser.zen) 
+  BROWSERS_OTHERS=(io.gitlab.librewolf-community com.vivaldi.Vivaldi app.zen_browser.zen) 
   install_flatpak_apps "${BROWSERS_OTHERS[@]}"
 
   COMMUNICATIONS=(org.gnome.Polari dev.geopjr.Tuba)
