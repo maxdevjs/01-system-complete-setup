@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Includes 'utils' only for standalone (direct call)
+# use of this script (otherwise the script is called from setup
+# and the import is not necessary)
+if [ $0 ]; then
+  . ../../../utils
+else
+  cd WM/sway
+  DIR=$PWD
+fi
+
+log "Installing Sway"
+
+execute() {
+  echo sway swaybg swayidle swaylock swaync wdisplays wmenu
+}
+
+execute
