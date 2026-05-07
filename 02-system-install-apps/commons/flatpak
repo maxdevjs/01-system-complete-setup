@@ -45,16 +45,16 @@ execute() {
   
   # https://librewolf.net/installation/linux/#flatpak
   # https://flathub.org/apps/app.zen_browser.zen
-  BROWSERS_OTHERS=(io.gitlab.librewolf-community com.vivaldi.Vivaldi app.zen_browser.zen) 
+  BROWSERS_OTHERS=(org.ecosia.Browser io.gitlab.librewolf-community com.vivaldi.Vivaldi app.zen_browser.zen) 
   install_flatpak_apps "${BROWSERS_OTHERS[@]}"
 
-  COMMUNICATIONS=(org.gnome.Polari dev.geopjr.Tuba)
+  COMMUNICATIONS=(org.gnome.Polari dev.geopjr.Tuba network.loki.Session org.telegram.desktop com.wire.WireDesktop) # chat.simplex.simplex
   install_flatpak_apps "${COMMUNICATIONS[@]}"
 
   DEV=(io.gitlab.liferooter.TextPieces re.sonny.Workbench)
   install_flatpak_apps "${DEV}[@]"
 
-  DEV_CONTAINERS=(io.podman_desktop.podman_desktop com.github.marhkb.Pods app.devsuite.Ptyxis com.github.sdv43.whaler) 
+  DEV_CONTAINERS=(io.podman_desktop.podman_desktop com.github.marhkb.Pods app.devsuite.Ptyxis com.github.sdv43.whaler org.virt_manager.virt-manager) 
   install_flatpak_apps "${DEV_CONTAINERS[@]}"
   
   # https://community.clearlinux.org/t/fail-to-install-vscode/6920/4
@@ -71,23 +71,26 @@ execute() {
   EDITORS=(org.gnome.gitlab.somas.Apostrophe)
   install_flatpak_apps "${EDITORS[@]}"
 
-  GRAPHICS=(org.flameshot.Flameshot org.gimp.GIMP nl.hjdskes.gcolor3 org.inkscape.Inkscape)
+  GRAPHICS=(org.flameshot.Flameshot org.gimp.GIMP org.gnome.ColorViewer org.gnome.Loupe nl.hjdskes.gcolor3 org.inkscape.Inkscape org.kde.krita)
   install_flatpak_apps "${GRAPHICS[@]}"
   
   # https://www.internet-radio.com/
   # partyvibe https://www.internet-radio.com/station/pvc-psytrance/ http://www.partyviberadio.com:8010/listen.pls?sid=1&t=.mp3
 
-  MULTIMEDIA=(com.rafaelmardojai.Blanket io.github.revisto.drum-machine com.github.johnfactotum.Foliate io.github.seadve.Mousai org.js.nuclear.Nuclear org.gnome.Podcasts ca.edestcroix.Recordbox de.haeckerfelix.Shortwave)
+  MULTIMEDIA=(io.bassi.Amberol com.rafaelmardojai.Blanket io.github.revisto.drum-machine com.github.johnfactotum.Foliate io.github.celluloid_player.Celluloid io.github.seadve.Mousai org.feichtmeier.Musicpod org.js.nuclear.Nuclear org.gnome.Podcasts  ca.edestcroix.Recordbox de.haeckerfelix.Shortwave)
   install_flatpak_apps "${MULTIMEDIA[@]}"
 
   # app.drey.Warp
   SECURITY=(org.gnome.World.Secrets)
   install_flatpak_apps "${SECURITY[@]}"
 
-  SYSTEM_TOOLS=(org.freedesktop.Bustle dev.edfloreshz.CosmicTweaks org.gnome.FontManager org.gnome.gedit io.missioncenter.MissionCenter net.nokyan.Resources)
-  install_flatpak_apps "${SYSTEM_TOOLS[@]}"
+  SECURITY_PROTON=(me.proton.Pass com.protonvpn.www)
+  install_flatpak_apps "${SECURITY_PROTON[@]}"
 
-  TOOLS=(xyz.safeworlds.hiit dev.bragefuglseth.Keypunch org.gnome.World.Iotas io.github.diegoivan.pdf_metadata_editor io.github.idevecore.Valuta)
+  TOOLS_FINANCE=(fr.free.Homebank io.github.idevecore.Valuta)
+  install_flatpak_apps "${TOOLS_FINANCE[@]}"
+
+  TOOLS=(xyz.safeworlds.hiit com.github.jeromerobert.pdfarranger dev.bragefuglseth.Keypunch org.gnome.Evince org.gnome.World.Iotas io.github.diegoivan.pdf_metadata_editor )
   install_flatpak_apps "${TOOLS[@]}"
   #This flatpak does not have write access to ~/.local/share/applications and ~/.local/share/icons, so it cannot install or uninstall PWAs.
   #https://discourse.flathub.org/t/installing-pwas-flatpak-has-no-write-access/6859
