@@ -77,11 +77,11 @@ execute() {
   # https://www.internet-radio.com/
   # partyvibe https://www.internet-radio.com/station/pvc-psytrance/ http://www.partyviberadio.com:8010/listen.pls?sid=1&t=.mp3
 
-  MULTIMEDIA=(io.bassi.Amberol com.rafaelmardojai.Blanket io.github.revisto.drum-machine com.github.johnfactotum.Foliate io.github.celluloid_player.Celluloid io.github.seadve.Mousai org.feichtmeier.Musicpod org.js.nuclear.Nuclear org.gnome.Podcasts  ca.edestcroix.Recordbox de.haeckerfelix.Shortwave)
+  MULTIMEDIA=(ca.edestcroix.Recordbox com.github.johnfactotum.Foliate com.rafaelmardojai.Blanket de.haeckerfelix.Shortwave io.bassi.Amberol io.ente.photos io.github.revisto.drum-machine io.github.celluloid_player.Celluloid io.github.seadve.Mousai org.feichtmeier.Musicpod org.js.nuclear.Nuclear org.gnome.Podcasts)
   install_flatpak_apps "${MULTIMEDIA[@]}"
 
   # app.drey.Warp
-  SECURITY=(org.gnome.World.Secrets)
+  SECURITY=(com.bitwarden.desktop io.ente.auth org.gnome.World.Secrets)
   install_flatpak_apps "${SECURITY[@]}"
 
   SECURITY_PROTON=(me.proton.Pass com.protonvpn.www)
