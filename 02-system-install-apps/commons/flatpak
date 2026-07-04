@@ -90,7 +90,7 @@ execute() {
   TOOLS_FINANCE=(fr.free.Homebank io.github.idevecore.Valuta)
   install_flatpak_apps "${TOOLS_FINANCE[@]}"
 
-  TOOLS=(xyz.safeworlds.hiit com.github.jeromerobert.pdfarranger dev.bragefuglseth.Keypunch org.gnome.Evince org.gnome.World.Iotas io.github.diegoivan.pdf_metadata_editor )
+  TOOLS=(io.github.flattool.Ignition xyz.safeworlds.hiit com.github.jeromerobert.pdfarranger dev.bragefuglseth.Keypunch org.gnome.Evince org.gnome.World.Iotas io.github.diegoivan.pdf_metadata_editor )
   install_flatpak_apps "${TOOLS[@]}"
   #This flatpak does not have write access to ~/.local/share/applications and ~/.local/share/icons, so it cannot install or uninstall PWAs.
   #https://discourse.flathub.org/t/installing-pwas-flatpak-has-no-write-access/6859
