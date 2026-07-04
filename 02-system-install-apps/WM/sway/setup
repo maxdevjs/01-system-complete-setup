@@ -12,7 +12,10 @@ fi
 log "Installing Sway"
 
 execute() {
-  echo sway swaybg swayidle swaylock swaync wdisplays wmenu
+  echo sway swaybg swayidle swaylock swaync wdisplays libcairo-devel gdk-pixbuf-devel libgtk-3-devel (for nwg-look) wl-clipboard wmenu
 }
+
+# https://docs.gtk.org/gdk3/
+# https://www.gtk.org/
 
 execute
